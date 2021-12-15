@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package v1.user;
 
-option go_pacakge = "github.com/yiaw/grpc-example/protos/v1/user";
+option go_package = "github.com/yiaw/grpc-example/protos/v1/user";
 
 service User {
     rpc SetUser(SetUserReqeust) returns (SetUserResponse);
@@ -20,18 +20,18 @@ message UserMessage {
     string labelvalue = 4;
     string password_expiretime = 5;
     int32  maxuser = 6;
-    char   locallogin = 7;
+    bool   locallogin = 7;
 }
 
 message ResponseData {
     int32 response_code =1;
     string response_message =2;
 }
-message SetUserRequest {
+message SetUserReqeust {
     UserMessage set_user=1;
 }
 
-message SetUserReseponse {
+message SetUserResponse {
    ResponseData res_data = 1;
 }
 
@@ -43,9 +43,9 @@ message GetUserResponse {
     UserMessage user=1;
 }
 
-message ListUserRequest{}
+message ListUsersRequest{}
 
-message ListUserResponse {
+message ListUsersResponse {
     repeated UserMessage users = 1;
 }
 
@@ -53,7 +53,7 @@ message UpdateUserRequest{
     UserMessage update_user =1; 
 }
 
-message UpdateUserReponse {
+message UpdateUserResponse {
     ResponseData res_data = 1;
 }
 
