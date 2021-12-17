@@ -4,10 +4,10 @@ import (
 	"log"
 	"net"
 
-	"google.golang.org/grpc"
+	"github.com/yiaw/grpc-example/cmd/app"
 )
 
-const portNumber = "9000"
+const portNumber = "12345"
 
 func main() {
 	lis, err := net.Listen("tcp", ":"+portNumber)
@@ -15,9 +15,9 @@ func main() {
 		log.Fatalf("failed to listen; %s\n", err.Error())
 	}
 
-	grpcServer := grpc.NewServer()
+	s := app.NewChatServer()
 	log.Printf("start gRPC Server on %s port\n", portNumber)
-	if err := grpcServer.Serve(lis); err != nil {
+	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to server :%s\n", err.Error())
 	}
 }

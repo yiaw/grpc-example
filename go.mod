@@ -2,9 +2,8 @@ module github.com/yiaw/grpc-example
 
 go 1.17
 
-require google.golang.org/grpc v1.43.0
-
 require (
+	google.golang.org/grpc v1.43.0
 	github.com/golang/protobuf v1.5.2 // indirect
 	golang.org/x/net v0.0.0-20211209124913-491a49abca63 // indirect
 	golang.org/x/sys v0.0.0-20211214234402-4825e8c3871d // indirect

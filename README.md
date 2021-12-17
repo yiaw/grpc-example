@@ -1,2 +1,2 @@
 # grpc-example
-Golang으로 gRPC를 구현해본다.
+Golang으로 gRPC Server 를 구현해본다.

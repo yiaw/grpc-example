@@ -5,12 +5,11 @@ package v1.user;
 option go_package = "github.com/yiaw/grpc-example/protos/v1/user";
 
 service User {
-//   rpc SetUser(SetUserReqeust) returns (SetUserResponse);
+    rpc SetUser(SetUserReqeust) returns (SetUserResponse);
     rpc GetUser(GetUserRequest) returns (GetUserResponse);
     rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
-//    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
-//   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserRequest);
-
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserRequest);
 }
 
 message UserMessage {
@@ -23,7 +22,6 @@ message UserMessage {
     bool   locallogin = 7;
 }
 
-/*
 message ResponseData {
     int32 response_code =1;
     string response_message =2;
@@ -36,7 +34,7 @@ message SetUserReqeust {
 message SetUserResponse {
    ResponseData res_data = 1;
 }
-*/
+
 message GetUserRequest {
     string user_id = 1;
 }
@@ -51,7 +49,6 @@ message ListUsersResponse {
     repeated UserMessage users = 1;
 }
 
-/*
 message UpdateUserRequest{
     UserMessage update_user =1; 
 }
@@ -67,4 +64,3 @@ message DeleteUserRequest {
 message DeleteUserResponse {
     ResponseData res_data = 1;
 }
-*/
