@@ -18,11 +18,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserClient interface {
-	SetUser(ctx context.Context, in *SetUserReqeust, opts ...grpc.CallOption) (*SetUserResponse, error)
-	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
-	ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error)
-	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
-	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserRequest, error)
+	SetUser(ctx context.Context, in *UserProto, opts ...grpc.CallOption) (*ResponseData, error)
+	GetUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*UserProto, error)
+	ListUsers(ctx context.Context, in *None, opts ...grpc.CallOption) (*ListUsersResponse, error)
+	UpdateUser(ctx context.Context, in *UserProto, opts ...grpc.CallOption) (*ResponseData, error)
+	DeleteUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*ResponseData, error)
 }
 
 type userClient struct {
@@ -33,8 +33,8 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 	return &userClient{cc}
 }
 
-func (c *userClient) SetUser(ctx context.Context, in *SetUserReqeust, opts ...grpc.CallOption) (*SetUserResponse, error) {
-	out := new(SetUserResponse)
+func (c *userClient) SetUser(ctx context.Context, in *UserProto, opts ...grpc.CallOption) (*ResponseData, error) {
+	out := new(ResponseData)
 	err := c.cc.Invoke(ctx, "/v1.user.User/SetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -42,8 +42,8 @@ func (c *userClient) SetUser(ctx context.Context, in *SetUserReqeust, opts ...gr
 	return out, nil
 }
 
-func (c *userClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
-	out := new(GetUserResponse)
+func (c *userClient) GetUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*UserProto, error) {
+	out := new(UserProto)
 	err := c.cc.Invoke(ctx, "/v1.user.User/GetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (c *userClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...gr
 	return out, nil
 }
 
-func (c *userClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts ...grpc.CallOption) (*ListUsersResponse, error) {
+func (c *userClient) ListUsers(ctx context.Context, in *None, opts ...grpc.CallOption) (*ListUsersResponse, error) {
 	out := new(ListUsersResponse)
 	err := c.cc.Invoke(ctx, "/v1.user.User/ListUsers", in, out, opts...)
 	if err != nil {
@@ -60,8 +60,8 @@ func (c *userClient) ListUsers(ctx context.Context, in *ListUsersRequest, opts .
 	return out, nil
 }
 
-func (c *userClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
-	out := new(UpdateUserResponse)
+func (c *userClient) UpdateUser(ctx context.Context, in *UserProto, opts ...grpc.CallOption) (*ResponseData, error) {
+	out := new(ResponseData)
 	err := c.cc.Invoke(ctx, "/v1.user.User/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -69,8 +69,8 @@ func (c *userClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts
 	return out, nil
 }
 
-func (c *userClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserRequest, error) {
-	out := new(DeleteUserRequest)
+func (c *userClient) DeleteUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*ResponseData, error) {
+	out := new(ResponseData)
 	err := c.cc.Invoke(ctx, "/v1.user.User/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -82,11 +82,11 @@ func (c *userClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
 type UserServer interface {
-	SetUser(context.Context, *SetUserReqeust) (*SetUserResponse, error)
-	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
-	ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error)
-	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
-	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserRequest, error)
+	SetUser(context.Context, *UserProto) (*ResponseData, error)
+	GetUser(context.Context, *UserId) (*UserProto, error)
+	ListUsers(context.Context, *None) (*ListUsersResponse, error)
+	UpdateUser(context.Context, *UserProto) (*ResponseData, error)
+	DeleteUser(context.Context, *UserId) (*ResponseData, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -94,19 +94,19 @@ type UserServer interface {
 type UnimplementedUserServer struct {
 }
 
-func (UnimplementedUserServer) SetUser(context.Context, *SetUserReqeust) (*SetUserResponse, error) {
+func (UnimplementedUserServer) SetUser(context.Context, *UserProto) (*ResponseData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetUser not implemented")
 }
-func (UnimplementedUserServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
+func (UnimplementedUserServer) GetUser(context.Context, *UserId) (*UserProto, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedUserServer) ListUsers(context.Context, *ListUsersRequest) (*ListUsersResponse, error) {
+func (UnimplementedUserServer) ListUsers(context.Context, *None) (*ListUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUsers not implemented")
 }
-func (UnimplementedUserServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
+func (UnimplementedUserServer) UpdateUser(context.Context, *UserProto) (*ResponseData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedUserServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserRequest, error) {
+func (UnimplementedUserServer) DeleteUser(context.Context, *UserId) (*ResponseData, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
@@ -123,7 +123,7 @@ func RegisterUserServer(s grpc.ServiceRegistrar, srv UserServer) {
 }
 
 func _User_SetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetUserReqeust)
+	in := new(UserProto)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -135,13 +135,13 @@ func _User_SetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/v1.user.User/SetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).SetUser(ctx, req.(*SetUserReqeust))
+		return srv.(UserServer).SetUser(ctx, req.(*UserProto))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserRequest)
+	in := new(UserId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -153,13 +153,13 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: "/v1.user.User/GetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetUser(ctx, req.(*GetUserRequest))
+		return srv.(UserServer).GetUser(ctx, req.(*UserId))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _User_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListUsersRequest)
+	in := new(None)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -171,13 +171,13 @@ func _User_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: "/v1.user.User/ListUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).ListUsers(ctx, req.(*ListUsersRequest))
+		return srv.(UserServer).ListUsers(ctx, req.(*None))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _User_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateUserRequest)
+	in := new(UserProto)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -189,13 +189,13 @@ func _User_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/v1.user.User/UpdateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+		return srv.(UserServer).UpdateUser(ctx, req.(*UserProto))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteUserRequest)
+	in := new(UserId)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -207,7 +207,7 @@ func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: "/v1.user.User/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).DeleteUser(ctx, req.(*DeleteUserRequest))
+		return srv.(UserServer).DeleteUser(ctx, req.(*UserId))
 	}
 	return interceptor(ctx, in, info, handler)
 }

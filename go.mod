@@ -1,4 +1,4 @@
-module github.com/yiaw/grpc-example
+module grpc-example
 
 go 1.17
 
@@ -11,3 +11,5 @@ require (
 	google.golang.org/genproto v0.0.0-20211208223120-3a66f561d7aa // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 )
+
+replace grpc-example => ./

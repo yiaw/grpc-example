@@ -5,14 +5,14 @@ package v1.user;
 option go_package = "github.com/yiaw/grpc-example/protos/v1/user";
 
 service User {
-    rpc SetUser(SetUserReqeust) returns (SetUserResponse);
-    rpc GetUser(GetUserRequest) returns (GetUserResponse);
-    rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
-    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
-    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserRequest);
+    rpc SetUser(UserProto) returns (ResponseData);
+    rpc GetUser(UserId) returns (UserProto);
+    rpc ListUsers(None) returns (ListUsersResponse);
+    rpc UpdateUser(UserProto) returns (ResponseData);
+    rpc DeleteUser(UserId) returns (ResponseData);
 }
 
-message UserMessage {
+message UserProto {
     string user_id = 1;
     string password= 2;
     string labelkey = 3;
@@ -22,45 +22,17 @@ message UserMessage {
     bool   locallogin = 7;
 }
 
+message None{}
+
+message UserId {
+    string user_id = 1;
+}
+
 message ResponseData {
     int32 response_code =1;
     string response_message =2;
 }
 
-message SetUserReqeust {
-    UserMessage set_user=1;
-}
-
-message SetUserResponse {
-   ResponseData res_data = 1;
-}
-
-message GetUserRequest {
-    string user_id = 1;
-}
-
-message GetUserResponse {
-    UserMessage user=1;
-}
-
-message ListUsersRequest{}
-
 message ListUsersResponse {
-    repeated UserMessage users = 1;
-}
-
-message UpdateUserRequest{
-    UserMessage update_user =1; 
-}
-
-message UpdateUserResponse {
-    ResponseData res_data = 1;
-}
-
-message DeleteUserRequest {
-    string user_id = 1;
-}
-
-message DeleteUserResponse {
-    ResponseData res_data = 1;
+    repeated UserProto users = 1;
 }
