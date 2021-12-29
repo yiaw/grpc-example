@@ -7,7 +7,7 @@ import (
 	v1user "grpc-example/internal/app/v1/user"
 )
 
-func NewUserServer() *grpc.Server {
+func NewGRPCServer() *grpc.Server {
 	s := grpc.NewServer()
 	v1user.NewUserServer(s)
 	reflection.Register(s)
