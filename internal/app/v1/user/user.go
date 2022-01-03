@@ -3,8 +3,9 @@ package user
 import (
 	"context"
 	"fmt"
-	"google.golang.org/grpc"
+	"log"
 
+	"google.golang.org/grpc"
 	userpb "grpc-example/protos/v1/user"
 )
 
@@ -29,6 +30,7 @@ func NewUserServer(s *grpc.Server) *grpc.Server {
 
 //	SetUser(context.Context, *UserProto) (*ResponseData, error)
 func (u *userServer) SetUser(ctx context.Context, req *userpb.UserProto) (*userpb.ResponseData, error) {
+	log.Printf("SetUser is Call\n")
 	_, ok := defUser[req.UserId]
 	if ok {
 		return nil, fmt.Errorf("%s is already user", req.UserId)
@@ -43,6 +45,7 @@ func (u *userServer) SetUser(ctx context.Context, req *userpb.UserProto) (*userp
 
 //GetUser(context.Context, *UserId) (*UserProto, error)
 func (u *userServer) GetUser(ctx context.Context, req *userpb.UserId) (*userpb.UserProto, error) {
+	log.Printf("GetUser is Call\n")
 	resUser, ok := defUser[req.UserId]
 	if !ok {
 		return nil, fmt.Errorf("%s not foun user", req.UserId)
@@ -53,6 +56,7 @@ func (u *userServer) GetUser(ctx context.Context, req *userpb.UserId) (*userpb.U
 //ListUsers(context.Context, *None) (*ListUsersResponse, error)
 func (u *userServer) ListUsers(ctx context.Context, req *userpb.None) (*userpb.ListUsersResponse, error) {
 	var resUserList []*userpb.UserProto
+	log.Printf("ListsUsers is Call\n")
 	for _, v := range defUser {
 		resUserList = append(resUserList, v)
 	}
@@ -64,6 +68,7 @@ func (u *userServer) ListUsers(ctx context.Context, req *userpb.None) (*userpb.L
 
 //UpdateUser(context.Context, *UserProto) (*ResponseData, error)
 func (u *userServer) UpdateUser(ctx context.Context, req *userpb.UserProto) (*userpb.ResponseData, error) {
+	log.Printf("UpdateUser is Call\n")
 	_, ok := defUser[req.UserId]
 	if !ok {
 		return nil, fmt.Errorf("%s not found user", req.UserId)
@@ -78,6 +83,7 @@ func (u *userServer) UpdateUser(ctx context.Context, req *userpb.UserProto) (*us
 
 //DeleteUser(context.Context, *UserId) (*ResponseData, error)
 func (u *userServer) DeleteUser(ctx context.Context, req *userpb.UserId) (*userpb.ResponseData, error) {
+	log.Printf("DeleteUser is Call\n")
 	delete(defUser, req.UserId)
 
 	return &userpb.ResponseData{
