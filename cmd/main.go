@@ -15,8 +15,8 @@ func main() {
 	tlsenable := flag.Bool("tls", false, "enable SSL/TLS, def false")
 	grpcport := flag.Int("port", 8090, "GRPC Server Port Num, def 8090")
 	httpport := flag.Int("http", 8080, "HTTP Gateway Port Num, def 8080")
-
 	flag.Parse()
+
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *grpcport))
 	if err != nil {
 		log.Fatalf("failed to listen; %s\n", err.Error())
@@ -33,7 +33,7 @@ func main() {
 		log.Fatalln(s.Serve(lis))
 	}()
 
-	gw := app.NewGateWay(*httpport)
+	gw, err := app.NewGateWay(*grpcport)
 	if err != nil {
 		log.Fatalf("failed NewGateWay() .. err=%s\n", err.Error())
 	}

@@ -12,15 +12,17 @@ import (
 	userpb "github.com/yiaw/grpc-example/protos/v2/user"
 )
 
-func NewGateWay(port int) http.Handler {
+func NewGateWay(port int) (http.Handler, error) {
 	conn, err := grpc.DialContext(
 		context.Background(),
 		fmt.Sprintf("0.0.0.0:%d", port),
 		grpc.WithBlock(),
 		grpc.WithInsecure(),
 	)
+
 	if err != nil {
 		log.Printf("DialContext is Fail..")
+		return nil, err
 	}
 
 	mux := runtime.NewServeMux()
@@ -30,8 +32,8 @@ func NewGateWay(port int) http.Handler {
 	} {
 		if err := f(context.Background(), mux, conn); err != nil {
 			log.Printf("Registry Handler Fail.. err=%s", err.Error())
-			return nil
+			return nil, err
 		}
 	}
-	return mux
+	return mux, nil
 }

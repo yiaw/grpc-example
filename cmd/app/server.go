@@ -31,6 +31,7 @@ func loadTLSCredentials() (credentials.TransportCredentials, error) {
 
 func NewGRPCServer(tlsenable bool) (*grpc.Server, error) {
 	var s *grpc.Server
+
 	if tlsenable {
 		tlsCredentials, err := loadTLSCredentials()
 		if err != nil {
