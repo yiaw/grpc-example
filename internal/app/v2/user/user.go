@@ -29,19 +29,6 @@ func NewUserServer(s *grpc.Server) *grpc.Server {
 	}
 
 	userpb.RegisterUserServer(s, &userServer{})
-
-	conn, err := grpc.DialContext(
-		context.Background(),
-		"0.0.0.0:8080",
-		grpc.WithBlock(),
-		grpc.WithInsecure(),
-	)
-	mux := runtime.NewServeMux()
-	if err = userpb.RegisterUserHandler(context.Background(), mux, conn); err != nil {
-		log.Printf("RegisterUserHandler() fail.. err=%s", err.Error())
-		return nil
-	}
-	//userpb.RegisterUserHandlerFromEndpoint()
 	return s
 }
 
