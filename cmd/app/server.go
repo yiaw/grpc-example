@@ -2,6 +2,7 @@ package app
 
 import (
 	"crypto/tls"
+	"errors"
 	"fmt"
 
 	"google.golang.org/grpc"
@@ -9,6 +10,7 @@ import (
 	"google.golang.org/grpc/reflection"
 
 	v1user "github.com/yiaw/grpc-example/internal/app/v1/user"
+	v2user "github.com/yiaw/grpc-example/internal/app/v2/user"
 )
 
 func loadTLSCredentials() (credentials.TransportCredentials, error) {
@@ -22,22 +24,12 @@ func loadTLSCredentials() (credentials.TransportCredentials, error) {
 	config := &tls.Config{
 		Certificates: []tls.Certificate{serverCert},
 		ClientAuth:   tls.NoClientCert,
-		//ClientAuth:   tls.RequireAndVerifyClientCert,
-		//ClientCAs:    certPool,
 	}
 
 	return credentials.NewTLS(config), nil
 }
 
 func NewGRPCServer(tlsenable bool) (*grpc.Server, error) {
-
-	/*
-		serverOptions := []grpc.ServerOption{
-			grpc.UnaryInterceptor(interceptor.Unary()),
-			grpc.StreamInterceptor(interceptor.Stream()),
-		}
-	*/
-
 	var s *grpc.Server
 	if tlsenable {
 		tlsCredentials, err := loadTLSCredentials()
@@ -50,12 +42,12 @@ func NewGRPCServer(tlsenable bool) (*grpc.Server, error) {
 	}
 
 	if s == nil {
-		return nil, fmt.Errorf("grpcNewServer Fail..\n")
+		return nil, errors.New("grpc.NewServer Fail")
 	}
 
 	v1user.NewUserServer(s)
-	// v2user.NewUserServer(s)
-
+	v2user.NewUserServer(s)
 	reflection.Register(s)
+
 	return s, nil
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/http"
 
 	"github.com/yiaw/grpc-example/cmd/app"
 )
@@ -12,10 +13,11 @@ import (
 func main() {
 
 	tlsenable := flag.Bool("tls", false, "enable SSL/TLS, def false")
-	port := flag.Int("port", 50001, "Server Port Num, def 50001")
+	grpcport := flag.Int("port", 8090, "GRPC Server Port Num, def 8090")
+	httpport := flag.Int("http", 8080, "HTTP Gateway Port Num, def 8080")
 
 	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *grpcport))
 	if err != nil {
 		log.Fatalf("failed to listen; %s\n", err.Error())
 	}
@@ -25,9 +27,23 @@ func main() {
 		log.Fatalf("failed New GRPCServer() .. err=%s\n", err.Error())
 	}
 
-	log.Printf("start gRPC Server on %d port, enableTLS=%t\n", *port, *tlsenable)
+	log.Printf("start gRPC Server on %d port, enableTLS=%t\n", *grpcport, *tlsenable)
 
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to server :%s\n", err.Error())
+	go func() {
+		log.Fatalln(s.Serve(lis))
+	}()
+
+	gw := app.NewGateWay(*httpport)
+	if err != nil {
+		log.Fatalf("failed NewGateWay() .. err=%s\n", err.Error())
 	}
+
+	httpServ := &http.Server{
+		Addr:    fmt.Sprintf(":%d", *httpport),
+		Handler: gw,
+	}
+
+	log.Printf("HTTP Server GRPC Gateway on http://0.0.0.0:%d", *httpport)
+
+	log.Fatalln(httpServ.ListenAndServe())
 }

@@ -1,0 +1,37 @@
+package app
+
+import (
+	"context"
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/grpc"
+
+	userpb "github.com/yiaw/grpc-example/protos/v2/user"
+)
+
+func NewGateWay(port int) http.Handler {
+	conn, err := grpc.DialContext(
+		context.Background(),
+		fmt.Sprintf("0.0.0.0:%d", port),
+		grpc.WithBlock(),
+		grpc.WithInsecure(),
+	)
+	if err != nil {
+		log.Printf("DialContext is Fail..")
+	}
+
+	mux := runtime.NewServeMux()
+
+	for _, f := range []func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error{
+		userpb.RegisterUserHandler,
+	} {
+		if err := f(context.Background(), mux, conn); err != nil {
+			log.Printf("Registry Handler Fail.. err=%s", err.Error())
+			return nil
+		}
+	}
+	return mux
+}
