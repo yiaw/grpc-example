@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package v2.user;
 
-option go_package = "/grpc-example/protos/v2/user";
+option go_package = "github.com/yiaw/grpc-example/protos/v2/user";
+
+import "google/api/annotations.proto";
 
 service User {
     rpc SetUser(UserProto) returns (ResponseData) {
@@ -23,14 +25,14 @@ service User {
 
     rpc UpdateUser(UserProto) returns (ResponseData) {
         option(google.api.http) = {
-            put: "/v2/users/{user_id}"
+            patch: "/v2/users/{user_id}"
         };
     };
     rpc DeleteUser(UserId) returns (ResponseData) {
         option(google.api.http) = {
-            delete: "/v2//users/{user_id}"
-        }
-    }
+            delete: "/v2/users/{user_id}"
+        };
+    };
 }
 
 message UserProto {

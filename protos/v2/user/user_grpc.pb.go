@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.19.1
-// source: user.proto
+// source: v2/user/user.proto
 
 package user
 
@@ -39,7 +39,7 @@ func NewUserClient(cc grpc.ClientConnInterface) UserClient {
 
 func (c *userClient) SetUser(ctx context.Context, in *UserProto, opts ...grpc.CallOption) (*ResponseData, error) {
 	out := new(ResponseData)
-	err := c.cc.Invoke(ctx, "/v1.user.User/SetUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v2.user.User/SetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func (c *userClient) SetUser(ctx context.Context, in *UserProto, opts ...grpc.Ca
 
 func (c *userClient) GetUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*UserProto, error) {
 	out := new(UserProto)
-	err := c.cc.Invoke(ctx, "/v1.user.User/GetUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v2.user.User/GetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (c *userClient) GetUser(ctx context.Context, in *UserId, opts ...grpc.CallO
 
 func (c *userClient) ListUsers(ctx context.Context, in *None, opts ...grpc.CallOption) (*ListUsersResponse, error) {
 	out := new(ListUsersResponse)
-	err := c.cc.Invoke(ctx, "/v1.user.User/ListUsers", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v2.user.User/ListUsers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +66,7 @@ func (c *userClient) ListUsers(ctx context.Context, in *None, opts ...grpc.CallO
 
 func (c *userClient) UpdateUser(ctx context.Context, in *UserProto, opts ...grpc.CallOption) (*ResponseData, error) {
 	out := new(ResponseData)
-	err := c.cc.Invoke(ctx, "/v1.user.User/UpdateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v2.user.User/UpdateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -75,7 +75,7 @@ func (c *userClient) UpdateUser(ctx context.Context, in *UserProto, opts ...grpc
 
 func (c *userClient) DeleteUser(ctx context.Context, in *UserId, opts ...grpc.CallOption) (*ResponseData, error) {
 	out := new(ResponseData)
-	err := c.cc.Invoke(ctx, "/v1.user.User/DeleteUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/v2.user.User/DeleteUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func _User_SetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.user.User/SetUser",
+		FullMethod: "/v2.user.User/SetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).SetUser(ctx, req.(*UserProto))
@@ -154,7 +154,7 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.user.User/GetUser",
+		FullMethod: "/v2.user.User/GetUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).GetUser(ctx, req.(*UserId))
@@ -172,7 +172,7 @@ func _User_ListUsers_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.user.User/ListUsers",
+		FullMethod: "/v2.user.User/ListUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).ListUsers(ctx, req.(*None))
@@ -190,7 +190,7 @@ func _User_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.user.User/UpdateUser",
+		FullMethod: "/v2.user.User/UpdateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).UpdateUser(ctx, req.(*UserProto))
@@ -208,7 +208,7 @@ func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/v1.user.User/DeleteUser",
+		FullMethod: "/v2.user.User/DeleteUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).DeleteUser(ctx, req.(*UserId))
@@ -220,7 +220,7 @@ func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(int
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var User_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "v1.user.User",
+	ServiceName: "v2.user.User",
 	HandlerType: (*UserServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -245,5 +245,5 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "user.proto",
+	Metadata: "v2/user/user.proto",
 }
