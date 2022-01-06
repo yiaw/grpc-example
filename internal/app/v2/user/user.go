@@ -3,9 +3,7 @@ package user
 import (
 	"context"
 	"fmt"
-	"log"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
