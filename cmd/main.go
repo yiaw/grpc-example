@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 
-	"grpc-example/cmd/app"
+	"github.com/yiaw/grpc-example/cmd/app"
 )
 
 func main() {

@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/reflection"
 
-	v1user "grpc-example/internal/app/v1/user"
+	v1user "github.com/yiaw/grpc-example/internal/app/v1/user"
 )
 
 func loadTLSCredentials() (credentials.TransportCredentials, error) {

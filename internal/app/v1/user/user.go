@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	userpb "grpc-example/protos/v1/user"
+	userpb "github.com/yiaw/grpc-example/protos/v1/user"
 )
 
 type userServer struct {
