@@ -3,9 +3,11 @@ package user
 import (
 	"context"
 	"fmt"
-	"log"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	userpb "grpc-example/protos/v1/user"
 )
 
@@ -30,25 +32,22 @@ func NewUserServer(s *grpc.Server) *grpc.Server {
 
 //	SetUser(context.Context, *UserProto) (*ResponseData, error)
 func (u *userServer) SetUser(ctx context.Context, req *userpb.UserProto) (*userpb.ResponseData, error) {
-	log.Printf("SetUser is Call\n")
 	_, ok := defUser[req.UserId]
 	if ok {
-		return nil, fmt.Errorf("%s is already user", req.UserId)
+		return nil, status.Errorf(codes.AlreadyExists, "already user: %s", req.UserId)
 	}
 
 	defUser[req.UserId] = req
 	return &userpb.ResponseData{
-		ResponseCode:    200,
 		ResponseMessage: fmt.Sprintf("%s Create Succ..", req.UserId),
 	}, nil
 }
 
 //GetUser(context.Context, *UserId) (*UserProto, error)
 func (u *userServer) GetUser(ctx context.Context, req *userpb.UserId) (*userpb.UserProto, error) {
-	log.Printf("GetUser is Call\n")
 	resUser, ok := defUser[req.UserId]
 	if !ok {
-		return nil, fmt.Errorf("%s not foun user", req.UserId)
+		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
 	}
 	return resUser, nil
 }
@@ -56,7 +55,6 @@ func (u *userServer) GetUser(ctx context.Context, req *userpb.UserId) (*userpb.U
 //ListUsers(context.Context, *None) (*ListUsersResponse, error)
 func (u *userServer) ListUsers(ctx context.Context, req *userpb.None) (*userpb.ListUsersResponse, error) {
 	var resUserList []*userpb.UserProto
-	log.Printf("ListsUsers is Call\n")
 	for _, v := range defUser {
 		resUserList = append(resUserList, v)
 	}
@@ -68,26 +66,26 @@ func (u *userServer) ListUsers(ctx context.Context, req *userpb.None) (*userpb.L
 
 //UpdateUser(context.Context, *UserProto) (*ResponseData, error)
 func (u *userServer) UpdateUser(ctx context.Context, req *userpb.UserProto) (*userpb.ResponseData, error) {
-	log.Printf("UpdateUser is Call\n")
 	_, ok := defUser[req.UserId]
 	if !ok {
-		return nil, fmt.Errorf("%s not found user", req.UserId)
+		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
 	}
 
 	defUser[req.UserId] = req
 	return &userpb.ResponseData{
-		ResponseCode:    200,
 		ResponseMessage: fmt.Sprintf("%s Update Succ..", req.UserId),
 	}, nil
 }
 
 //DeleteUser(context.Context, *UserId) (*ResponseData, error)
 func (u *userServer) DeleteUser(ctx context.Context, req *userpb.UserId) (*userpb.ResponseData, error) {
-	log.Printf("DeleteUser is Call\n")
 	delete(defUser, req.UserId)
+	_, ok := defUser[req.UserId]
+	if !ok {
+		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
+	}
 
 	return &userpb.ResponseData{
-		ResponseCode:    200,
-		ResponseMessage: fmt.Sprintf("%s delete succ..", req.UserId),
+		ResponseMessage: fmt.Sprintf("%s Delete succ..", req.UserId),
 	}, nil
 }

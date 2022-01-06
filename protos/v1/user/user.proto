@@ -29,8 +29,7 @@ message UserId {
 }
 
 message ResponseData {
-    int32 response_code =1;
-    string response_message =2;
+    string response_message =1;
 }
 
 message ListUsersResponse {
