@@ -3,22 +3,18 @@ package user
 import (
 	"context"
 	"fmt"
+	"log"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	v1repo "github.com/yiaw/grpc-example/internal/repo/v1"
 	userpb "github.com/yiaw/grpc-example/protos/v2/user"
 )
 
 type userServer struct {
 	userpb.UserServer
-}
-
-var defUser map[string]*userpb.UserProto
-
-func init() {
-	defUser = make(map[string]*userpb.UserProto)
 }
 
 func NewUserServer(s *grpc.Server) *grpc.Server {
@@ -32,12 +28,21 @@ func NewUserServer(s *grpc.Server) *grpc.Server {
 
 //	SetUser(context.Context, *UserProto) (*ResponseData, error)
 func (u *userServer) SetUser(ctx context.Context, req *userpb.UserProto) (*userpb.ResponseData, error) {
-	_, ok := defUser[req.UserId]
+	_, ok := v1repo.User[req.UserId]
 	if ok {
 		return nil, status.Errorf(codes.AlreadyExists, "already user: %s", req.UserId)
 	}
 
-	defUser[req.UserId] = req
+	log.Printf("req=%v\n", req)
+	log.Printf("reqid=%v\n", req.UserId)
+
+	user := v1repo.MapperV2User(req)
+	if user == nil {
+		return nil, status.Errorf(codes.Internal, "MapperV2User Fail")
+	}
+
+	v1repo.User[req.UserId] = user
+	log.Printf("user=%v\n", user)
 	return &userpb.ResponseData{
 		ResponseMessage: fmt.Sprintf("%s Create Succ..", req.UserId),
 	}, nil
@@ -45,18 +50,25 @@ func (u *userServer) SetUser(ctx context.Context, req *userpb.UserProto) (*userp
 
 //GetUser(context.Context, *UserId) (*UserProto, error)
 func (u *userServer) GetUser(ctx context.Context, req *userpb.UserId) (*userpb.UserProto, error) {
-	resUser, ok := defUser[req.UserId]
+	resUser, ok := v1repo.User[req.UserId]
 	if !ok {
 		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
 	}
-	return resUser, nil
+	log.Printf("resUser=%v\n", resUser)
+
+	user := v1repo.ConvertV2User(resUser)
+	if user == nil {
+		return nil, status.Errorf(codes.Internal, "ConvertV2User Fail")
+	}
+	log.Printf("user=%v\n", user)
+	return user, nil
 }
 
 //ListUsers(context.Context, *None) (*ListUsersResponse, error)
 func (u *userServer) ListUsers(ctx context.Context, req *userpb.None) (*userpb.ListUsersResponse, error) {
 	var resUserList []*userpb.UserProto
-	for _, v := range defUser {
-		resUserList = append(resUserList, v)
+	for _, v := range v1repo.User {
+		resUserList = append(resUserList, v1repo.ConvertV2User(v))
 	}
 
 	return &userpb.ListUsersResponse{
@@ -66,12 +78,17 @@ func (u *userServer) ListUsers(ctx context.Context, req *userpb.None) (*userpb.L
 
 //UpdateUser(context.Context, *UserProto) (*ResponseData, error)
 func (u *userServer) UpdateUser(ctx context.Context, req *userpb.UserProto) (*userpb.ResponseData, error) {
-	_, ok := defUser[req.UserId]
+	_, ok := v1repo.User[req.UserId]
 	if !ok {
 		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
 	}
 
-	defUser[req.UserId] = req
+	user := v1repo.MapperV2User(req)
+	if user == nil {
+		return nil, status.Errorf(codes.Internal, "MapperV2User Fail")
+	}
+
+	v1repo.User[req.UserId] = user
 	return &userpb.ResponseData{
 		ResponseMessage: fmt.Sprintf("%s Update Succ..", req.UserId),
 	}, nil
@@ -79,8 +96,8 @@ func (u *userServer) UpdateUser(ctx context.Context, req *userpb.UserProto) (*us
 
 //DeleteUser(context.Context, *UserId) (*ResponseData, error)
 func (u *userServer) DeleteUser(ctx context.Context, req *userpb.UserId) (*userpb.ResponseData, error) {
-	delete(defUser, req.UserId)
-	_, ok := defUser[req.UserId]
+	delete(v1repo.User, req.UserId)
+	_, ok := v1repo.User[req.UserId]
 	if !ok {
 		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
 	}
