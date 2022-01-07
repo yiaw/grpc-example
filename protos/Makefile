@@ -28,6 +28,7 @@ v2user-gateway:
 
 .PHONY: v2user-all
 v2user-all:
+	ln -sf ../thirdparty/googleapis/google ./google;
 	protoc -I=. \
 		--go_out . \
     	--go_opt paths=source_relative \
