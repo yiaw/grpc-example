@@ -6,9 +6,7 @@ proto-gateway를 통해 Restapi와 연동하기 [O]
 
 proto-middleware를 통해 Req/Res Log 남기기 [X]
 
-
-# grpc-example
-
+# grpc-example 
 ## protoc 설치 
 ~~~bash
 :> git clone https://github.com/protocolbuffers/protobuf.git  
@@ -36,9 +34,10 @@ proto-middleware를 통해 Req/Res Log 남기기 [X]
 ## Gateway proto buffer 컴파일 오류 해결 내용
 ### 1) not found google/api/annotaions.proto 에러 메시지 해결 방법
 ~~~bash
+# 현재 경로가 $GOPATH/src/grpc-example 이라고 가정 할 경우
 :> git clone https://github.com/googleapis/googleapis.git
-:> googleapis/api/annotaions.proto  => protos/google/api/annotaions.proto
-:> googleapis/api/http.proto => protos/google/api/http.proto
+:> cp googleapis/google/api/annotaions.proto  ${GOPATH}/src/grpc-example/protos/google/api/annotaions.proto
+:> cp googleapis/google/api/http.proto ${GOPATH}/src/grpc-example/google/api/http.proto
 ~~~
 
 ### 2) not found google/protobuf/descriptor.proto 에러 메시지 해결 방법 
@@ -47,10 +46,9 @@ proto-middleware를 통해 Req/Res Log 남기기 [X]
 ~~~bash
 :> cd /usr/local/include/google #해당 파일의 권한 변경 해주기
 :> chmod -R 755 /usr/local/include/google
-
 ~~~
 
-  나. /usr/local/include/google 이 없을 경우 
+#### /usr/local/include/google 이 없을 경우 
 ~~~bash
 :> git clone https://github.com/protocolbuffers/protobuf.git  
 :> cp -rp protobuf/src/google /usr/local/include/google
@@ -60,7 +58,7 @@ proto-middleware를 통해 Req/Res Log 남기기 [X]
 작성 중 
 
 # protos version 정보
-|경로|grpc server|gateway|middlewere|
+|경로|grpc-server|grpc-gateway|grpc-middlewere|
 |:---:|:---:|:---:|:---:|
 |protos/v1/user|o|x|x| 
 |protos/v2/user |o|o|x|
@@ -76,3 +74,18 @@ proto-middleware를 통해 Req/Res Log 남기기 [X]
 |internal/$(version)/$(usercase)|proto에 정의한 Serivce 구현 부분|
 |protos/$(version)/$(usercase)|proto buffer 정의|
 |thirdparty|google/api proto buffer pkg|
+
+***
+# 설치 및 테스트 방법
+## Install 
+~~~bash
+:> cd $GOPATH/src
+:> git clone https://github.com/yiaw/grpc-example.git
+:> cd grpc-example/cmd
+:> make
+:> ./grpc-server
+2022/01/07 14:34:23 start gRPC Server on 8090 port, enableTLS=false
+2022/01/07 14:34:23 HTTP Server GRPC Gateway on http://0.0.0.0:8080
+~~~
+
+## Tests
