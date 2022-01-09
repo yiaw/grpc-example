@@ -1,8 +1,8 @@
 package repo
 
 import (
-	v1userpb "grpc-example/protos/v1/user"
-	v2userpb "grpc-example/protos/v2/user"
+	v1userpb "github.com/yiaw/grpc-example/protos/v1/user"
+	v2userpb "github.com/yiaw/grpc-example/protos/v2/user"
 )
 
 type UserRepo struct {
@@ -67,4 +67,4 @@ func (u *UserRepo) ConvertV2User() *v2userpb.UserProto {
 		Maxuser:            u.Maxuser,
 		Locallogin:         u.Locallogin,
 	}
-
+}
