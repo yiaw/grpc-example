@@ -55,7 +55,9 @@ proto-middleware를 통해 Req/Res Log 남기기 [X]
 ~~~
 
 # proto-middleware
-작성 중 
+grpc-ecosystem/go-grpc-middleware 에서 제공해주는 middleware 사용해보기
+
+custerm middleware 구현 하기
 
 # protos version 정보
 |경로|grpc-server|grpc-gateway|grpc-middlewere|
@@ -88,4 +90,3 @@ proto-middleware를 통해 Req/Res Log 남기기 [X]
 2022/01/07 14:34:23 HTTP Server GRPC Gateway on http://0.0.0.0:8080
 ~~~
 
-## Tests
