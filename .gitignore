@@ -1,4 +1,5 @@
 cmd/cmd
 cmd/grpc-server
+cmd/grpc-server.exe
 build
 .key
