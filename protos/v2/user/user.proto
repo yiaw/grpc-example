@@ -10,6 +10,7 @@ service User {
     rpc SetUser(UserProto) returns (ResponseData) {
         option(google.api.http) = {
             post: "/v2/users" 
+            body: "*"
         };
     };
     rpc GetUser(UserId) returns (UserProto) {
@@ -26,6 +27,7 @@ service User {
     rpc UpdateUser(UserProto) returns (ResponseData) {
         option(google.api.http) = {
             patch: "/v2/users/{user_id}"
+            body: "*"
         };
     };
     rpc DeleteUser(UserId) returns (ResponseData) {
