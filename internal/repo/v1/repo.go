@@ -1,8 +1,8 @@
 package repo
 
 import (
-	v1userpb "grpc-example/protos/v1/user"
-	v2userpb "grpc-example/protos/v2/user"
+	v1userpb "github.com/yiaw/grpc-example/protos/v1/user"
+	v2userpb "github.com/yiaw/grpc-example/protos/v2/user"
 )
 
 type UserRepo struct {
@@ -15,10 +15,10 @@ type UserRepo struct {
 	Locallogin         bool
 }
 
-var user map[string]*UserRepo
+var User map[string]*UserRepo
 
 func init() {
-	user = make(map[string]*UserRepo)
+	User = make(map[string]*UserRepo)
 }
 
 func MapperV1User(u *v1userpb.UserProto) *UserRepo {
@@ -45,7 +45,7 @@ func MapperV2User(u *v2userpb.UserProto) *UserRepo {
 	}
 }
 
-func (u *UserRepo) ConvertV1User() *v1userpb.UserProto {
+func ConvertV1User(u *UserRepo) *v1userpb.UserProto {
 	return &v1userpb.UserProto{
 		UserId:             u.UserId,
 		Password:           u.Password,
@@ -57,7 +57,7 @@ func (u *UserRepo) ConvertV1User() *v1userpb.UserProto {
 	}
 }
 
-func (u *UserRepo) ConvertV2User() *v2userpb.UserProto {
+func ConvertV2User(u *UserRepo) *v2userpb.UserProto {
 	return &v2userpb.UserProto{
 		UserId:             u.UserId,
 		Password:           u.Password,
@@ -67,4 +67,4 @@ func (u *UserRepo) ConvertV2User() *v2userpb.UserProto {
 		Maxuser:            u.Maxuser,
 		Locallogin:         u.Locallogin,
 	}
-
+}
