@@ -5,4 +5,4 @@ all:
 install:
 	cp -rp grpc-server ../build/docker/grpc-server
 clean:
-	rm -rf grpc-server
+	rm -rf grpc-server cmd
