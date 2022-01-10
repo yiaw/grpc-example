@@ -28,13 +28,11 @@ func NewUserServer(s *grpc.Server) *grpc.Server {
 
 //	SetUser(context.Context, *UserProto) (*ResponseData, error)
 func (u *userServer) SetUser(ctx context.Context, req *userpb.UserProto) (*userpb.ResponseData, error) {
+	log.Printf("SetUser Handler Call")
 	_, ok := v1repo.User[req.UserId]
 	if ok {
 		return nil, status.Errorf(codes.AlreadyExists, "already user: %s", req.UserId)
 	}
-
-	log.Printf("req=%v\n", req)
-	log.Printf("reqid=%v\n", req.UserId)
 
 	user := v1repo.MapperV2User(req)
 	if user == nil {
@@ -42,7 +40,7 @@ func (u *userServer) SetUser(ctx context.Context, req *userpb.UserProto) (*userp
 	}
 
 	v1repo.User[req.UserId] = user
-	log.Printf("user=%v\n", user)
+
 	return &userpb.ResponseData{
 		ResponseMessage: fmt.Sprintf("%s Create Succ..", req.UserId),
 	}, nil
@@ -50,23 +48,24 @@ func (u *userServer) SetUser(ctx context.Context, req *userpb.UserProto) (*userp
 
 //GetUser(context.Context, *UserId) (*UserProto, error)
 func (u *userServer) GetUser(ctx context.Context, req *userpb.UserId) (*userpb.UserProto, error) {
+	log.Printf("GetUser Handler Call")
 	resUser, ok := v1repo.User[req.UserId]
 	if !ok {
 		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
 	}
-	log.Printf("resUser=%v\n", resUser)
 
 	user := v1repo.ConvertV2User(resUser)
 	if user == nil {
 		return nil, status.Errorf(codes.Internal, "ConvertV2User Fail")
 	}
-	log.Printf("user=%v\n", user)
+
 	return user, nil
 }
 
 //ListUsers(context.Context, *None) (*ListUsersResponse, error)
 func (u *userServer) ListUsers(ctx context.Context, req *userpb.None) (*userpb.ListUsersResponse, error) {
 	var resUserList []*userpb.UserProto
+	log.Printf("ListUsers Handler Call")
 	for _, v := range v1repo.User {
 		resUserList = append(resUserList, v1repo.ConvertV2User(v))
 	}
@@ -78,6 +77,7 @@ func (u *userServer) ListUsers(ctx context.Context, req *userpb.None) (*userpb.L
 
 //UpdateUser(context.Context, *UserProto) (*ResponseData, error)
 func (u *userServer) UpdateUser(ctx context.Context, req *userpb.UserProto) (*userpb.ResponseData, error) {
+	log.Printf("UpdateUser Handler Call")
 	_, ok := v1repo.User[req.UserId]
 	if !ok {
 		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
@@ -96,6 +96,8 @@ func (u *userServer) UpdateUser(ctx context.Context, req *userpb.UserProto) (*us
 
 //DeleteUser(context.Context, *UserId) (*ResponseData, error)
 func (u *userServer) DeleteUser(ctx context.Context, req *userpb.UserId) (*userpb.ResponseData, error) {
+	log.Printf("DeleteUser Handler Call")
+
 	delete(v1repo.User, req.UserId)
 	_, ok := v1repo.User[req.UserId]
 	if !ok {
