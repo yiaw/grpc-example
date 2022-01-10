@@ -4,7 +4,7 @@ Golang으로 gRPC Server 를 구현해본다 [O]
 
 proto-gateway를 통해 Restapi와 연동하기 [O]
 
-proto-middleware를 통해 Req/Res Log 남기기 [X]
+proto-middleware 사용 및 구현 해보기 [O]]
 
 # grpc-example 
 ## protoc 설치 
@@ -60,12 +60,10 @@ grpc-ecosystem/go-grpc-middleware 에서 제공해주는 middleware 사용해보
 custerm middleware 구현 하기
 
 # protos version 정보
-|경로|grpc-server|grpc-gateway|grpc-middlewere|
-|:---:|:---:|:---:|:---:|
-|protos/v1/user|o|x|x| 
-|protos/v2/user |o|o|x|
-|protos/v3/user |o|o|o|
-
+|경로|grpc-server|grpc-gateway|
+|:---:|:---:|:---:|
+|protos/v1/user|o|x|
+|protos/v2/user |o|o|
 
 # project 경로 설명
 |Path|Description|
@@ -73,9 +71,9 @@ custerm middleware 구현 하기
 |cmd/main.go|프로젝트 메인 코드|
 |cmd/app/server.go|grpc server 구현 부분|
 |cmd/app/gateway.go|grpc gateway 구현 부분|
+|cmd/app/middleware.go|grpc middleware 구현 부분|
 |internal/$(version)/$(usercase)|proto에 정의한 Serivce 구현 부분|
 |protos/$(version)/$(usercase)|proto buffer 정의|
-|thirdparty|google/api proto buffer pkg|
 
 ***
 # 설치 및 테스트 방법
@@ -89,4 +87,3 @@ custerm middleware 구현 하기
 2022/01/07 14:34:23 start gRPC Server on 8090 port, enableTLS=false
 2022/01/07 14:34:23 HTTP Server GRPC Gateway on http://0.0.0.0:8080
 ~~~
-
