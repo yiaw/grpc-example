@@ -37,9 +37,9 @@ func NewGRPCServer(tlsenable bool) (*grpc.Server, error) {
 		if err != nil {
 			return nil, fmt.Errorf("cannot load TLS credentials: %w", err)
 		}
-		s = grpc.NewServer(grpc.Creds(tlsCredentials))
+		s = grpc.NewServer(grpc.Creds(tlsCredentials), grpc.UnaryInterceptor(NewChainMiddleware()))
 	} else {
-		s = grpc.NewServer()
+		s = grpc.NewServer(grpc.UnaryInterceptor(NewChainMiddleware()))
 	}
 
 	if s == nil {
