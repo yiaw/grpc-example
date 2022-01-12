@@ -6,6 +6,17 @@ proto-gateway를 통해 Restapi와 연동하기 [:white_check_mark:]
 
 proto-middleware 사용 및 구현 해보기 [:white_check_mark:]
 
+
+Sub Learning Objectives
+===================
+proto v3 에서는 아래의 사항을 확인 한다.
+
+1. Golang Interface Type 과 grpc protobuf 매칭 
+2. gRPC http header or metadata 를 protobuf에 정의 하는 방법
+3. gRPC Stream 서비스 gateway 연동 방법 
+4. gRPC Message Routing 방법 
+5. gRPC REST API, Request URL 별로 Body Type이 다른 경우 정의 방법 (1번과 유사)
+
 # grpc-example 
 ## protoc 설치 
 ~~~bash
