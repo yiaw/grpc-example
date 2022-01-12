@@ -55,4 +55,54 @@ message Users {
     repeated User items = 1;
 }
 
+service ChatService {
+    rpc EnterRoom(RoomNumber) returns(None){
+        option(google.api.http) = {
+            post: "/v3/room/{room_number}" 
+            body: "*"
+        };
+    };
 
+    rpc ExitRoom(RoomNumber) returns(None) {       
+        option(google.api.http) = {
+            delete: "/v3/room/{room_number}" 
+            body: "*"
+        };
+    };
+
+    rpc GetRoom(RoomNumber) returns (Room) {
+        option(google.api.http) = {
+            get: "/v3/room/{room_number}" 
+            body: "*"
+        };
+    };
+
+    rpc ListRooms(None) returns (Rooms) {
+        option(google.api.http) = {
+            get: "/v3/room/" 
+        };
+    };
+    rpc Message(stream ChatMessage) returns(stream ChatMessage) {
+        option(google.api.http) = {
+            put: "/v3/room"
+            body: "*"
+        };
+    };
+}
+
+message None{}
+message ChatMessage {
+    int32 target_room=1;
+    string message=2;
+}
+message RoomNumber {
+    int32 room_number=1;
+}
+message Room {
+    int32 room_numer=1;
+    string room_name=2;
+}
+
+message Rooms {
+    repeated Room items=1;
+}
