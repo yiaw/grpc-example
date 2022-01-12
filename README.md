@@ -1,10 +1,10 @@
 Learning Objectives
 ===================
-Golang으로 gRPC Server 를 구현해본다 [O]
+Golang으로 gRPC Server 를 구현해본다 [:white_check_mark:]
 
-proto-gateway를 통해 Restapi와 연동하기 [O]
+proto-gateway를 통해 Restapi와 연동하기 [:white_check_mark:]
 
-proto-middleware 사용 및 구현 해보기 [O]]
+proto-middleware 사용 및 구현 해보기 [:white_check_mark:]
 
 # grpc-example 
 ## protoc 설치 
