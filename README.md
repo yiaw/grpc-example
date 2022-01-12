@@ -60,10 +60,11 @@ grpc-ecosystem/go-grpc-middleware 에서 제공해주는 middleware 사용해보
 custerm middleware 구현 하기
 
 # protos version 정보
-|경로|grpc-server|grpc-gateway|
-|:---:|:---:|:---:|
-|protos/v1/user|o|x|
-|protos/v2/user |o|o|
+|경로|grpc-server|grpc-gateway|stream|
+|:---:|:---:|:---:|:---:|
+|protos/v1/user|o|x|x|
+|protos/v2/user |o|o|x|
+|protos/v3/user |o|o|o|
 
 # project 경로 설명
 |Path|Description|
