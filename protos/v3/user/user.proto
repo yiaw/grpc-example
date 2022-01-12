@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package v3.user;
+
+option go_package = "github.com/yiaw/grpc-example/protos/v3/user";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service UserService {
+    rpc SetUser(User) returns (Message) {
+        option(google.api.http) = {
+            post: "/v3/users" 
+            body: "*"
+        };
+    };
+    rpc GetUser(UserId) returns (User) {
+        option(google.api.http) = {
+            get: "/v3/users/{user_id}" 
+        };
+    };
+    rpc ListUser(google.protobuf.Empty) returns (Users) {
+        option(google.api.http) = {
+            get: "/v3/users"
+        };
+    };
+
+    rpc UpdateUser(User) returns (Message) {
+        option(google.api.http) = {
+            patch: "/v3/users/{user_id}"
+            body: "*"
+        };
+    };
+    rpc DeleteUser(UserId) returns (Message) {
+        option(google.api.http) = {
+            delete: "/v3/users/{user_id}"
+        };
+    };
+}
+
+message User {
+    string user_id = 1;
+    string password= 2;
+}
+
+message UserId {
+    string user_id = 1;
+}
+
+message Message {
+    string text =1;
+}
+
+message Users {
+    repeated User items = 1;
+}
+
+
