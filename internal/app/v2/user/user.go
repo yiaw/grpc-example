@@ -98,11 +98,12 @@ func (u *userServer) UpdateUser(ctx context.Context, req *userpb.UserProto) (*us
 func (u *userServer) DeleteUser(ctx context.Context, req *userpb.UserId) (*userpb.ResponseData, error) {
 	log.Printf("DeleteUser Handler Call")
 
-	delete(v1repo.User, req.UserId)
 	_, ok := v1repo.User[req.UserId]
 	if !ok {
 		return nil, status.Errorf(codes.NotFound, "not found user: %s", req.UserId)
 	}
+
+	delete(v1repo.User, req.UserId)
 
 	return &userpb.ResponseData{
 		ResponseMessage: fmt.Sprintf("%s Delete succ..", req.UserId),
