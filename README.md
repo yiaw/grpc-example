@@ -63,8 +63,8 @@ custerm middleware 구현 하기
 |경로|grpc-server|grpc-gateway|stream|
 |:---:|:---:|:---:|:---:|
 |protos/v1/user|o|x|x|
+|protos/v1/chat|o|x|o|
 |protos/v2/user |o|o|x|
-|protos/v3/user |o|o|o|
 
 # project 경로 설명
 |Path|Description|
@@ -76,7 +76,7 @@ custerm middleware 구현 하기
 |internal/$(version)/$(usercase)|proto에 정의한 Serivce 구현 부분|
 |protos/$(version)/$(usercase)|proto buffer 정의|
 
-***
+* * *
 # 설치 및 테스트 방법
 ## Install 
 ~~~bash
@@ -88,3 +88,16 @@ custerm middleware 구현 하기
 2022/01/07 14:34:23 start gRPC Server on 8090 port, enableTLS=false
 2022/01/07 14:34:23 HTTP Server GRPC Gateway on http://0.0.0.0:8080
 ~~~
+
+
+* * *
+# gRPC-GO 를 사용하면서 궁금한점
+1. Golang에서는 Interface{} 변수를 사용 할 수 있는데 Protobuf와 매칭되는 특정 예약어가 있는가?
+   proto syntax3 에서 [Any](https://developers.google.com/protocol-buffers/docs/proto3#any)를 지원 한다.   
+      
+2. gRPC에서 HTTP Header의 값을 얻어오는 방법
+   Context 객체에서 얻어 올 수 있다. [링크](https://github.com/grpc/grpc-go/blob/master/Documentation/grpc-metadata.md)
+
+3. Protobuf 정의 시 GET, DELETE에 Body를 정의 하는 방법
+   GET은 공식적으로 지원하지 않는다.   
+   DELETE의 경우 Proto를 컴파일 시 `--grcp-gateway_out allow_delete_body=true:.`를 추가 한다.
