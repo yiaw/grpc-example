@@ -9,7 +9,7 @@ import "google/protobuf/empty.proto";
 
 service ChatService {
     rpc SendMessage(Message) returns (google.protobuf.Empty);
-    rpc RegistRouterChannel(User) returns (stream Message);
+    rpc RegistRouterChannel(stream Message) returns (stream Message);
     rpc SendAny(AnyMessage) returns (google.protobuf.Empty);
     rpc RegistAnyRouterChannel(User) returns (stream AnyMessage);
 

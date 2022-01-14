@@ -7,6 +7,11 @@ import (
 	chatpb "github.com/yiaw/grpc-example/protos/v1/chat"
 )
 
+type RecvStream struct {
+	msg *chatpb.Message
+	err error
+}
+
 type Channel struct {
 	name    string
 	channel chan *chatpb.Message

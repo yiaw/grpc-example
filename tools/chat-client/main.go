@@ -23,13 +23,18 @@ func main() {
 	fmt.Printf("enter username : ")
 	fmt.Scanf("%s", &u)
 
-	user := &chatpb.User{
+	msg := &chatpb.Message{
 		User: u,
 	}
 
-	stream, err := cli.RegistRouterChannel(context.Background(), user)
+	stream, err := cli.RegistRouterChannel(context.Background())
 	if err != nil {
 		log.Fatalf("RegistRouterChannel %v\n", err)
+	}
+
+	err = stream.Send(msg)
+	if err != nil {
+		log.Fatalf("stream.Send Fail.. err %v\n", err)
 	}
 
 	go func() {
