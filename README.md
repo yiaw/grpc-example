@@ -1,10 +1,8 @@
 Learning Objectives
 ===================
-Golang으로 gRPC Server 를 구현해본다 :white_check_mark:
-
-proto-gateway를 통해 Restapi와 연동하기 :white_check_mark:
-
-proto-middleware 사용 및 구현 해보기 :white_check_mark:
+- [x] Golang으로 gRPC Server 를 구현해본다
+- [x] proto-gateway를 통해 Restapi와 연동하기
+- [x] proto-middleware 사용 및 구현 해보기
 
 # grpc-example 
 ## protoc 설치 
@@ -67,14 +65,14 @@ custerm middleware 구현 하기
 |protos/v2/user |o|o|x|
 
 # project 경로 설명
-|Path|Description|
-|:---|:---|
-|cmd/main.go|프로젝트 메인 코드|
-|cmd/app/server.go|grpc server 구현 부분|
-|cmd/app/gateway.go|grpc gateway 구현 부분|
-|cmd/app/middleware.go|grpc middleware 구현 부분|
+|Path                           |Description                     |
+|:------------------------------|:-------------------------------|
+|cmd/main.go                    |프로젝트 메인 코드              |
+|cmd/grpc/server.go             |grpc server 구현 부분           |
+|cmd/grpc/gateway.go            |grpc gateway 구현 부분          |
+|cmd/grpc/middleware.go         |grpc middleware 구현 부분       |
 |internal/$(version)/$(usercase)|proto에 정의한 Serivce 구현 부분|
-|protos/$(version)/$(usercase)|proto buffer 정의|
+|protos/$(version)/$(usercase)  |proto buffer 정의               |
 
 * * *
 # 설치 및 테스트 방법
