@@ -72,11 +72,9 @@ func (c *ChatServer) RegistRouterChannel(stream chatpb.ChatService_RegistRouterC
 				log.Printf("Stream Message Send Fail %v\n", err.Error())
 			}
 		case <-timeout:
-			log.Printf("Stream Message TimeOut, %s\n", user)
-			log.Printf("Disconnect Check, %s\n", user)
 			ping := &chatpb.Message{User: "owner", Msg: "ping message"}
 			if err := stream.Send(ping); err != nil {
-				log.Printf("Stream Message Send Fail %v\n", err.Error())
+				log.Printf("[%s] Stream Message Send Fail %v\n", user, err.Error())
 				return err
 			}
 			// NOT TODO
