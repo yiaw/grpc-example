@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	chatpb "github.com/yiaw/grpc-example/protos/v1/chat"
+	chatpb "github.com/yiaw/grpc-example/protos/v2/chat"
 	"google.golang.org/grpc"
 )
 
@@ -42,6 +42,7 @@ func main() {
 			msg, err := stream.Recv()
 			if err != nil {
 				log.Printf("stream message recv fail err %v\n", err)
+				return
 			}
 			fmt.Printf("[%s] %s\n", msg.User, msg.Msg)
 		}
