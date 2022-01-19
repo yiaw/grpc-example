@@ -1,3 +1,4 @@
+# 현재 v2chat proto buffer 추가 후 grpc-server 기동 시 namespace-conflict 발생 
 Learning Objectives
 ===================
 - [x] Golang으로 gRPC Server 를 구현해본다
