@@ -11,6 +11,7 @@ import (
 
 	v1chat "github.com/yiaw/grpc-example/internal/app/v1/chat"
 	v1user "github.com/yiaw/grpc-example/internal/app/v1/user"
+	v2chat "github.com/yiaw/grpc-example/internal/app/v2/chat"
 	v2user "github.com/yiaw/grpc-example/internal/app/v2/user"
 )
 
@@ -50,6 +51,7 @@ func NewGRPCServer(tlsenable bool) (*grpc.Server, error) {
 	v1user.NewUserServer(s)
 	v1chat.NewChatServer(s)
 	v2user.NewUserServer(s)
+	v2chat.NewChatServer(s)
 	reflection.Register(s)
 
 	return s, nil

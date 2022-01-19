@@ -9,6 +9,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 
+	chatpb "github.com/yiaw/grpc-example/protos/v2/chat"
 	userpb "github.com/yiaw/grpc-example/protos/v2/user"
 )
 
@@ -29,6 +30,7 @@ func NewGateWay(port int) (http.Handler, error) {
 
 	for _, f := range []func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error{
 		userpb.RegisterUserHandler,
+		chatpb.RegisterChatServiceHandler,
 	} {
 		if err := f(context.Background(), mux, conn); err != nil {
 			log.Printf("Registry Handler Fail.. err=%s", err.Error())
