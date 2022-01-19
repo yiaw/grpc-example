@@ -25,8 +25,6 @@ const _ = grpc.SupportPackageIsVersion7
 type ChatServiceClient interface {
 	SendMessage(ctx context.Context, in *Message, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	RegistRouterChannel(ctx context.Context, opts ...grpc.CallOption) (ChatService_RegistRouterChannelClient, error)
-	SendAny(ctx context.Context, in *AnyMessage, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	RegistAnyRouterChannel(ctx context.Context, in *User, opts ...grpc.CallOption) (ChatService_RegistAnyRouterChannelClient, error)
 }
 
 type chatServiceClient struct {
@@ -77,55 +75,12 @@ func (x *chatServiceRegistRouterChannelClient) Recv() (*Message, error) {
 	return m, nil
 }
 
-func (c *chatServiceClient) SendAny(ctx context.Context, in *AnyMessage, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/v1.chat.ChatService/SendAny", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *chatServiceClient) RegistAnyRouterChannel(ctx context.Context, in *User, opts ...grpc.CallOption) (ChatService_RegistAnyRouterChannelClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[1], "/v1.chat.ChatService/RegistAnyRouterChannel", opts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &chatServiceRegistAnyRouterChannelClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	return x, nil
-}
-
-type ChatService_RegistAnyRouterChannelClient interface {
-	Recv() (*AnyMessage, error)
-	grpc.ClientStream
-}
-
-type chatServiceRegistAnyRouterChannelClient struct {
-	grpc.ClientStream
-}
-
-func (x *chatServiceRegistAnyRouterChannelClient) Recv() (*AnyMessage, error) {
-	m := new(AnyMessage)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
-}
-
 // ChatServiceServer is the server API for ChatService service.
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility
 type ChatServiceServer interface {
 	SendMessage(context.Context, *Message) (*emptypb.Empty, error)
 	RegistRouterChannel(ChatService_RegistRouterChannelServer) error
-	SendAny(context.Context, *AnyMessage) (*emptypb.Empty, error)
-	RegistAnyRouterChannel(*User, ChatService_RegistAnyRouterChannelServer) error
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -138,12 +93,6 @@ func (UnimplementedChatServiceServer) SendMessage(context.Context, *Message) (*e
 }
 func (UnimplementedChatServiceServer) RegistRouterChannel(ChatService_RegistRouterChannelServer) error {
 	return status.Errorf(codes.Unimplemented, "method RegistRouterChannel not implemented")
-}
-func (UnimplementedChatServiceServer) SendAny(context.Context, *AnyMessage) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SendAny not implemented")
-}
-func (UnimplementedChatServiceServer) RegistAnyRouterChannel(*User, ChatService_RegistAnyRouterChannelServer) error {
-	return status.Errorf(codes.Unimplemented, "method RegistAnyRouterChannel not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 
@@ -202,45 +151,6 @@ func (x *chatServiceRegistRouterChannelServer) Recv() (*Message, error) {
 	return m, nil
 }
 
-func _ChatService_SendAny_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AnyMessage)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ChatServiceServer).SendAny(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/v1.chat.ChatService/SendAny",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).SendAny(ctx, req.(*AnyMessage))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ChatService_RegistAnyRouterChannel_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(User)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(ChatServiceServer).RegistAnyRouterChannel(m, &chatServiceRegistAnyRouterChannelServer{stream})
-}
-
-type ChatService_RegistAnyRouterChannelServer interface {
-	Send(*AnyMessage) error
-	grpc.ServerStream
-}
-
-type chatServiceRegistAnyRouterChannelServer struct {
-	grpc.ServerStream
-}
-
-func (x *chatServiceRegistAnyRouterChannelServer) Send(m *AnyMessage) error {
-	return x.ServerStream.SendMsg(m)
-}
-
 // ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -252,10 +162,6 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "SendMessage",
 			Handler:    _ChatService_SendMessage_Handler,
 		},
-		{
-			MethodName: "SendAny",
-			Handler:    _ChatService_SendAny_Handler,
-		},
 	},
 	Streams: []grpc.StreamDesc{
 		{
@@ -263,11 +169,6 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:       _ChatService_RegistRouterChannel_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
-		},
-		{
-			StreamName:    "RegistAnyRouterChannel",
-			Handler:       _ChatService_RegistAnyRouterChannel_Handler,
-			ServerStreams: true,
 		},
 	},
 	Metadata: "chat.proto",

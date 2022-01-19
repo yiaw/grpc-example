@@ -1,17 +1,13 @@
 syntax = "proto3";
 
 package v1.chat;
-
 option go_package = "github.com/yiaw/grpc-example/protos/v1/chat";
 
-import "google/protobuf/any.proto";
 import "google/protobuf/empty.proto";
 
 service ChatService {
     rpc SendMessage(Message) returns (google.protobuf.Empty);
     rpc RegistRouterChannel(stream Message) returns (stream Message);
-    rpc SendAny(AnyMessage) returns (google.protobuf.Empty);
-    rpc RegistAnyRouterChannel(User) returns (stream AnyMessage);
 
 }
 message User {
@@ -26,5 +22,4 @@ message Message {
 message AnyMessage {
     string  user = 1;
     int32 msgType = 2;
-    google.protobuf.Any msg = 3;
 }
